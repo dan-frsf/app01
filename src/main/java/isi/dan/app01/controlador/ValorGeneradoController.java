@@ -1,10 +1,16 @@
 package isi.dan.app01.controlador;
 
+import java.util.List;
+
+import org.apache.catalina.connector.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +26,8 @@ import isi.dan.app01.servicios.ValorGeneradoService;
 @RequestMapping("/api/random")
 public class ValorGeneradoController {
     
+    Logger log = LoggerFactory.getLogger(ValorGenerado.class);
+
     @Autowired
     ValorGeneradoService servicio;
 
@@ -43,13 +51,20 @@ public class ValorGeneradoController {
         return ResponseEntity.ok().body(servicio.generar(min,max));
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/xml")
-    public ValorGeneradoDTO guardar(ValorGeneradoDTO valorGenerado){
-        return valorGenerado;
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<ValorGenerado> guardar(@RequestBody ValorGeneradoDTO valorGeneradoReq){
+        log.info("Recibo {}", valorGeneradoReq);
+        ValorGenerado v = this.servicio.generar(valorGeneradoReq.getMinimo(), valorGeneradoReq.getMaximo(), valorGeneradoReq.getUsuario());
+        return ResponseEntity.ok().body(v);
     }
 
     @PostMapping(consumes = "application/xml" )
     public String guardar2(ValorGeneradoDTO valorGenerado){
         return "XML";
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<ValorGenerado>> porUser(@RequestParam(name="user") String user){
+        return ResponseEntity.ok().body(servicio.buscarPorNombre(user));
     }
 }

@@ -5,6 +5,7 @@ public class ValorGeneradoDTO {
     public Integer maximo;
     public String usuario;
     public Integer valorGenerado;
+    
     public Integer getMinimo() {
         return minimo;
     }
@@ -28,6 +29,11 @@ public class ValorGeneradoDTO {
     }
     public void setValorGenerado(Integer valorGenerado) {
         this.valorGenerado = valorGenerado;
+    }
+    @Override
+    public String toString() {
+        return "ValorGeneradoDTO [minimo=" + minimo + ", maximo=" + maximo + ", usuario=" + usuario + ", valorGenerado="
+                + valorGenerado + "]";
     }
 
     

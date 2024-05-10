@@ -42,5 +42,11 @@ public class ValorGenerado {
         this.usuario = usuario;
     }
 
+    @Override
+    public String toString() {
+        return "ValorGenerado [valor=" + valor + ", fechaGeneracion=" + fechaGeneracion + ", minimo=" + minimo
+                + ", maximo=" + maximo + ", usuario=" + usuario + "]";
+    }
+
     
 }
